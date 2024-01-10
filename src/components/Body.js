@@ -9,8 +9,9 @@ const Body = () => {
     const fetchData = async () => {
         const data = await fetch('https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING');
         const json = await data.json();
-        setRestaurantList(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-        setFilteredResList(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        console.log(json?.data?.cards);
+        setRestaurantList(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        setFilteredResList(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
     }
     const searchBtnClicked = () => {
         let filteredRes = restaurantList.filter((rest)=> rest?.info?.name.toLowerCase().includes(searchText.toLowerCase()))
@@ -19,7 +20,10 @@ const Body = () => {
     useEffect(()=>{
         fetchData();
     },[])
-  return (
+  return restaurantList.length === 0 ? (
+    <h1>loading...</h1>
+  ): 
+  (
     <div>
       <div className='ml-5 mt-5'>
       <input
@@ -37,7 +41,7 @@ const Body = () => {
       </div>
       <div className='flex flex-wrap'>
         {
-            filteredResList?.map((restaurant)=>
+            filteredResList.map((restaurant)=>
             (
                 <Link
                     to={"/restaurantmenu/"+restaurant?.info?.id}
