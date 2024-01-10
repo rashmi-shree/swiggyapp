@@ -37,7 +37,7 @@ const Body = () => {
       </div>
       <div className='flex flex-wrap'>
         {
-            filteredResList.map((restaurant)=>
+            filteredResList?.map((restaurant)=>
             (
                 <Link
                     to={"/restaurantmenu/"+restaurant?.info?.id}
